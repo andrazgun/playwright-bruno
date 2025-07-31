@@ -31,7 +31,7 @@ public class ContactUs_steps {
         throw new io.cucumber.java.PendingException();
     }
     @Then("I should be presented with a successful contact us submission message")
-    public void iShouldBePresentedWithASuccessfulContacUsSubmissionMessage() {
+    public void iShouldBePresentedWithASuccessfulContactUsSubmissionMessage() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
