@@ -2,12 +2,12 @@ package browser;
 
 import com.microsoft.playwright.*;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import support.LogUtil;
 
 import java.awt.*;
 
 public class BrowserManager {
-    public static final Logger logger = LoggerFactory.getLogger(BrowserManager.class);
+    private static final Logger logger = LogUtil.getLogger(BrowserManager.class);
     public Playwright playwright; //provides a method to launch a browser instance
     public Page page; //Represents a single web page within a context (i.e. Represents a single tab or page in the browser)
     public BrowserContext browserContext; //way to operate multiple independent browser sessions.

@@ -5,9 +5,13 @@ import io.cucumber.java.After;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
+import org.slf4j.Logger;
+import support.LogUtil;
 
 public class Hooks {
 
+    private static final Logger staticLogger = LogUtil.getLogger(Hooks.class); // for static methods
+    private final Logger logger = LogUtil.getLogger(this.getClass()); // for instance methods
     private final BrowserManager browserManager;
 
     public Hooks(BrowserManager browserManager) { //constructor using PicoContainer for DI
@@ -17,26 +21,23 @@ public class Hooks {
     //Runs once before all test start (all scenario)
     @BeforeAll
     public static void beforeAll() {
-        System.out.println("Executing test suite (beforeAll hook)");
+        staticLogger.info("Executing test suite (beforeAll hook)");
     }
 
-    //Runs once after all test start
     @AfterAll
     public static void afterAll() {
-        System.out.println("Finished executing the test suite (afterAll hook)");
+        staticLogger.info("Finished executing the test suite (afterAll hook)");
     }
 
-    //Runs before each test (each scenario)
     @Before
     public void setUp() {
         browserManager.setUp();
-        System.out.println("Executing setUp() (before test hook)");
+        logger.info("Executing setUp() (before test hook)");
     }
 
-    //Runs after each test (each scenario)
     @After
     public void tearDown() {
         browserManager.tearDown();
-        System.out.println("Executing tearDown() (after test hook)");
+        logger.info("Executing tearDown() (after test hook)");
     }
 }
