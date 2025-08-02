@@ -64,6 +64,26 @@ public class ContactUs_steps {
         Pattern pattern = Pattern.compile("Error: (all fields are required|Invalid email address)");
         Matcher matcher = pattern.matcher(bodyText);
         assertTrue(matcher.find(), "Text does not match text: '" + bodyText + "'");
+    }
 
+    @And("I type a specific first name {string}")
+    public void iTypeASpecificFirstName(String firstName) {
+        browserManager.page.getByPlaceholder("First Name").fill(firstName);
+    }
+
+    @And("I type a specific last name {string}")
+    public void iTypeASpecificLastName(String lastName) {
+        browserManager.page.getByPlaceholder("Last Name").fill(lastName);
+    }
+
+    @And("I enter a specific email address {string}")
+    public void iEnterASpecificEmailAddress(String emailAddress) {
+        browserManager.page.getByPlaceholder("Email Address").fill(emailAddress);
+    }
+
+    @And("I type specific text {string} and number {int} within the comment input field")
+    public void iTypeSpecificTextAndNumberWithinTheCommentInputField(String word, int number) {
+        browserManager.page.getByPlaceholder("Comments").fill(word + " " + number);
+        browserManager.page.pause();
     }
 }
