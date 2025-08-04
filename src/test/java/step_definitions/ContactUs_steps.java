@@ -6,6 +6,7 @@ import com.microsoft.playwright.Page;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.datafaker.Faker;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +16,7 @@ import static org.testng.Assert.assertTrue;
 
 public class ContactUs_steps {
         public BrowserManager browserManager;
+        private final Faker faker = new Faker();
 
     public ContactUs_steps(BrowserManager browserManager) {
         this.browserManager = browserManager;
@@ -46,26 +48,6 @@ public class ContactUs_steps {
         browserManager.page.click("input[value='SUBMIT']");
 //        browserManager.page.getByText("SUBMIT").click();
     }
-    @Then("I should be presented with a successful contact us submission message")
-    public void iShouldBePresentedWithASuccessfulContactUsSubmissionMessage() {
-//        assertThat(browserManager.page.getByText("Thank You for your Message!")).isVisible();
-        Locator locator = browserManager.page.locator("div#contact_reply > h1");
-        assertThat(locator).isVisible();
-        assertThat(locator).hasText("Thank You for your Message!");
-//        browserManager.page.pause();
-    }
-
-    @Then("I should be presented with a unsuccessful contact us submission message")
-    public void iShouldBePresentedWithAUnsuccessfulContactUsSubmissionMessage() {
-        //wait for element
-        browserManager.page.waitForSelector("body");
-        Locator bodyElement = browserManager.page.locator("body");
-        String bodyText = bodyElement.textContent();
-        Pattern pattern = Pattern.compile("Error: (all fields are required|Invalid email address)");
-        Matcher matcher = pattern.matcher(bodyText);
-        assertTrue(matcher.find(), "Text does not match text: '" + bodyText + "'");
-    }
-
     @And("I type a specific first name {string}")
     public void iTypeASpecificFirstName(String firstName) {
         browserManager.page.getByPlaceholder("First Name").fill(firstName);
@@ -84,6 +66,43 @@ public class ContactUs_steps {
     @And("I type specific text {string} and number {int} within the comment input field")
     public void iTypeSpecificTextAndNumberWithinTheCommentInputField(String word, int number) {
         browserManager.page.getByPlaceholder("Comments").fill(word + " " + number);
-        browserManager.page.pause();
+    }
+
+    @And("I type a random first name")
+    public void iTypeARandomFirstName() {
+        String randomFirstName = faker.name().firstName();
+        browserManager.page.getByPlaceholder("First Name").fill(randomFirstName);
+    }
+
+    @And("I type a random last name")
+    public void iTypeARandomLastName() {
+        String randomLastName = faker.name().lastName();
+        browserManager.page.getByPlaceholder("Last Name").fill(randomLastName);
+    }
+
+    @And("I enter a random email address")
+    public void iEnterARandomEmailAddress() {
+        String randomEmailAddress = faker.internet().emailAddress();
+        browserManager.page.getByPlaceholder("Email Address").fill(randomEmailAddress);
+    }
+
+    @Then("I should be presented with a successful contact us submission message")
+    public void iShouldBePresentedWithASuccessfulContactUsSubmissionMessage() {
+//        assertThat(browserManager.page.getByText("Thank You for your Message!")).isVisible();
+        Locator locator = browserManager.page.locator("div#contact_reply > h1");
+        assertThat(locator).isVisible();
+        assertThat(locator).hasText("Thank You for your Message!");
+//        browserManager.page.pause();
+    }
+
+    @Then("I should be presented with a unsuccessful contact us submission message")
+    public void iShouldBePresentedWithAUnsuccessfulContactUsSubmissionMessage() {
+        //wait for element
+        browserManager.page.waitForSelector("body");
+        Locator bodyElement = browserManager.page.locator("body");
+        String bodyText = bodyElement.textContent();
+        Pattern pattern = Pattern.compile("Error: (all fields are required|Invalid email address)");
+        Matcher matcher = pattern.matcher(bodyText);
+        assertTrue(matcher.find(), "Text does not match text: '" + bodyText + "'");
     }
 }
