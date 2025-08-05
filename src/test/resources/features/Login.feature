@@ -6,6 +6,7 @@ Feature: WebdriverUniversity.com - Login Page
     And I type a user name '<username>' and a password '<password>'
     And I click on the login button
     Then I should be presented with an alert box which contains text '<expectedAlertText>'
+    @wip
     Examples:
       | username  | password     | expectedAlertText    |
       |           |              | validation failed    |
