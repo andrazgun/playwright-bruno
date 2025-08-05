@@ -15,6 +15,16 @@ public class LoginPage_steps {
         this.browserManager = browserManager;
     }
 
+    @When("I type a user name {string}")
+    public void iTypeAUserName(String username) {
+        browserManager.page.getByPlaceholder("Username").fill(username);
+    }
+
+    @When("I type a password {string}")
+    public void iTypeAPassword(String password) {
+        browserManager.page.getByPlaceholder("Password").fill(password);
+    }
+
     @When("I type a user name {string} and a password {string}")
     public void iTypeAUserNameUsernameAndAPasswordPassword(String username, String password) {
         browserManager.page.getByPlaceholder("Username").fill(username);

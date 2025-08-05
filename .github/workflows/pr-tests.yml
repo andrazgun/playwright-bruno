@@ -1,0 +1,38 @@
+name: Playwright Tests
+
+on:
+  pull_request:
+    branches: [master]  # Only run on PRs to main
+  push:
+    branches: [master]  # Optional: also run on push to main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17 and Maven 3.9.9
+        uses: s4u/setup-maven-action@v1.7.0
+        with:
+          java-version: 17
+          java-distribution: temurin
+          maven-version: 3.9.9
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven
+
+      - name: Verify Maven and Java
+        run: |
+          java -version
+          mvn --version
+
+      - name: Run Playwright + Cucumber Tests
+        run: mvn clean verify
