@@ -25,22 +25,22 @@ public class ContactUs_steps {
 
     @When("I type a first name")
     public void iTypeAFirstName() {
-        browserManager.page.getByPlaceholder("First Name").fill("Joe");
+        browserManager.getPage().getByPlaceholder("First Name").fill("Joe");
     }
 
     @And("I type a last name")
     public void iTypeALastName() {
-        browserManager.page.getByPlaceholder("Last Name").fill("Doe");
+        browserManager.getPage().getByPlaceholder("Last Name").fill("Doe");
     }
 
     @When("I enter an email address")
     public void iEnterAnEmailAddress() {
-        browserManager.page.getByPlaceholder("Email Address").fill("agtest1@yopmail.com");
+        browserManager.getPage().getByPlaceholder("Email Address").fill("agtest1@yopmail.com");
     }
 
     @When("I type a comment")
     public void iTypeAComment() {
-        browserManager.page.getByPlaceholder("Comments").fill("Hello World!");
+        browserManager.getPage().getByPlaceholder("Comments").fill("Hello World!");
     }
 
     @When("I click on the submit button")
@@ -48,54 +48,54 @@ public class ContactUs_steps {
         // custom wait
         Page.WaitForSelectorOptions options = new Page.WaitForSelectorOptions().setTimeout(1000);
         //wait for the button to load
-        browserManager.page.waitForSelector("input[value='SUBMIT']", options);
+        browserManager.getPage().waitForSelector("input[value='SUBMIT']", options);
         // once loaded, click on button
-        browserManager.page.click("input[value='SUBMIT']");
+        browserManager.getPage().click("input[value='SUBMIT']");
 //        browserManager.page.getByText("SUBMIT").click();
     }
 
     @And("I type a specific first name {string}")
     public void iTypeASpecificFirstName(String firstName) {
-        browserManager.page.getByPlaceholder("First Name").fill(firstName);
+        browserManager.getPage().getByPlaceholder("First Name").fill(firstName);
     }
 
     @And("I type a specific last name {string}")
     public void iTypeASpecificLastName(String lastName) {
-        browserManager.page.getByPlaceholder("Last Name").fill(lastName);
+        browserManager.getPage().getByPlaceholder("Last Name").fill(lastName);
     }
 
     @And("I enter a specific email address {string}")
     public void iEnterASpecificEmailAddress(String emailAddress) {
-        browserManager.page.getByPlaceholder("Email Address").fill(emailAddress);
+        browserManager.getPage().getByPlaceholder("Email Address").fill(emailAddress);
     }
 
     @And("I type specific text {string} and number {int} within the comment input field")
     public void iTypeSpecificTextAndNumberWithinTheCommentInputField(String word, int number) {
-        browserManager.page.getByPlaceholder("Comments").fill(word + " " + number);
+        browserManager.getPage().getByPlaceholder("Comments").fill(word + " " + number);
     }
 
     @And("I type a random first name")
     public void iTypeARandomFirstName() {
         String randomFirstName = faker.name().firstName();
-        browserManager.page.getByPlaceholder("First Name").fill(randomFirstName);
+        browserManager.getPage().getByPlaceholder("First Name").fill(randomFirstName);
     }
 
     @And("I type a random last name")
     public void iTypeARandomLastName() {
         String randomLastName = faker.name().lastName();
-        browserManager.page.getByPlaceholder("Last Name").fill(randomLastName);
+        browserManager.getPage().getByPlaceholder("Last Name").fill(randomLastName);
     }
 
     @And("I enter a random email address")
     public void iEnterARandomEmailAddress() {
         String randomEmailAddress = faker.internet().emailAddress();
-        browserManager.page.getByPlaceholder("Email Address").fill(randomEmailAddress);
+        browserManager.getPage().getByPlaceholder("Email Address").fill(randomEmailAddress);
     }
 
     @Then("I should be presented with a successful contact us submission message")
     public void iShouldBePresentedWithASuccessfulContactUsSubmissionMessage() {
 //        assertThat(browserManager.page.getByText("Thank You for your Message!")).isVisible();
-        Locator locator = browserManager.page.locator("div#contact_reply > h1");
+        Locator locator = browserManager.getPage().locator("div#contact_reply > h1");
         assertThat(locator).isVisible();
         assertThat(locator).hasText("Thank You for your Message!");
 //        browserManager.page.pause();
@@ -104,8 +104,8 @@ public class ContactUs_steps {
     @Then("I should be presented with a unsuccessful contact us submission message")
     public void iShouldBePresentedWithAUnsuccessfulContactUsSubmissionMessage() {
         //wait for element
-        browserManager.page.waitForSelector("body");
-        Locator bodyElement = browserManager.page.locator("body");
+        browserManager.getPage().waitForSelector("body");
+        Locator bodyElement = browserManager.getPage().locator("body");
         String bodyText = bodyElement.textContent();
         Pattern pattern = Pattern.compile("Error: (all fields are required|Invalid email address)");
         Matcher matcher = pattern.matcher(bodyText);
@@ -114,23 +114,23 @@ public class ContactUs_steps {
 
     @And("I type a first name {word} and a last name {word}")
     public void iTypeAFirstNameFirstNameAndALastNameLastName(String firstName, String lastName) {
-        browserManager.page.getByPlaceholder("First Name").fill(firstName);
-        browserManager.page.getByPlaceholder("Last Name").fill(lastName);
+        browserManager.getPage().getByPlaceholder("First Name").fill(firstName);
+        browserManager.getPage().getByPlaceholder("Last Name").fill(lastName);
     }
 
     @And("I type a email address {string} and a comment {string}")
     public void iTypeAEmailAddressEmailAddressAndACommentComment(String emailAddress, String comment) {
-        browserManager.page.getByPlaceholder("Email Address").fill(emailAddress);
-        browserManager.page.getByPlaceholder("Comments").fill(comment);
+        browserManager.getPage().getByPlaceholder("Email Address").fill(emailAddress);
+        browserManager.getPage().getByPlaceholder("Comments").fill(comment);
     }
 
     @Then("I should be presented with header text {string}")
     public void iShouldBePresentedWithHeaderTextMessage(String message) {
         //Wait for the target element
         //h1 | body
-        browserManager.page.waitForSelector("//h1 | //body"); //dynamic selector h1 OR body
+        browserManager.getPage().waitForSelector("//h1 | //body"); //dynamic selector h1 OR body
         //Get all elements inner text
-        List<String> texts = browserManager.page.locator("//h1 | //body").allInnerTexts();
+        List<String> texts = browserManager.getPage().locator("//h1 | //body").allInnerTexts();
         //Variable to store the found text
         String foundText = "";
         //Check if any of the text include the expected message

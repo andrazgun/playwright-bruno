@@ -17,27 +17,27 @@ public class LoginPage_steps {
 
     @When("I type a user name {string}")
     public void iTypeAUserName(String username) {
-        browserManager.page.getByPlaceholder("Username").fill(username);
+        browserManager.getPage().getByPlaceholder("Username").fill(username);
     }
 
     @When("I type a password {string}")
     public void iTypeAPassword(String password) {
-        browserManager.page.getByPlaceholder("Password").fill(password);
+        browserManager.getPage().getByPlaceholder("Password").fill(password);
     }
 
     @When("I type a user name {string} and a password {string}")
     public void iTypeAUserNameUsernameAndAPasswordPassword(String username, String password) {
-        browserManager.page.getByPlaceholder("Username").fill(username);
-        browserManager.page.getByPlaceholder("Password").fill(password);
+        browserManager.getPage().getByPlaceholder("Username").fill(username);
+        browserManager.getPage().getByPlaceholder("Password").fill(password);
     }
 
     @And("I click on the login button")
     public void iClickOnTheLoginButton() {
-        browserManager.page.onceDialog(dialog -> {
+        browserManager.getPage().onceDialog(dialog -> {
             alertText = dialog.message();
             dialog.accept();
         });
-        Locator loginButton = browserManager.page.locator("#login-button");
+        Locator loginButton = browserManager.getPage().locator("#login-button");
         loginButton.hover();
         loginButton.click(new Locator.ClickOptions().setForce(true));
 //        browserManager.page.getByText("Login").click();

@@ -16,10 +16,12 @@ public class BrowserManager {
     private static final Logger logger = LogUtil.getLogger(BrowserManager.class);
     private final Properties properties;
 
-    public Playwright playwright; //provides a method to launch a browser instance
-    public Page page; //Represents a single web page within a context (i.e. Represents a single tab or page in the browser)
-    public BrowserContext browserContext; //way to operate multiple independent browser sessions.
-    public Browser browser; //represents the browser instance
+    // A ThreadLocal is like a personal locker for each thread, so they don't share data with other threads.
+    // Think of threads as individual workers in a factory, each with their own toolbox (ThreadLocal).
+    private static final ThreadLocal<Playwright> playwright = new ThreadLocal<>(); //used to create an instance of the Chromium, Firefox browser etc.
+    private static final ThreadLocal<Browser> browser = new ThreadLocal<>(); //represents the browser instance.
+    private static final ThreadLocal<BrowserContext> context = new ThreadLocal<>(); //is the isolated browser session.
+    private static final ThreadLocal<Page> page = new ThreadLocal<>(); //is the single tab or window in the browser.
 
     public BrowserManager() {
         properties = new Properties();
@@ -35,9 +37,21 @@ public class BrowserManager {
         }
     }
 
+    public Page getPage() {
+        return page.get();
+    }
+
+    public void setPage(Page newPage) {
+        page.set(newPage);
+    }
+
+    public BrowserContext getContext() {
+        return context.get();
+    }
+
     public byte[] takeScreenshot() {
-        if (page != null) {
-            return page.screenshot();
+        if (getPage() != null) {
+            return getPage().screenshot();
         }
         logger.warn("Page is null; screenshot not taken.");
         return null;
@@ -46,40 +60,57 @@ public class BrowserManager {
     public void setUp() {
         logger.info("Setting up Playwright initiated");
 
+        if (playwright.get() == null) {
+            playwright.set(Playwright.create());
+        }
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth();
         int height = (int) screenSize.getHeight();
-
-        playwright = Playwright.create();
 
         String browserType = properties.getProperty("browser", "chromium").toLowerCase();
 
         switch (browserType) {
             case "firefox":
-                browser = playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+                browser.set(playwright.get().firefox().launch(new BrowserType.LaunchOptions().setHeadless(false)));
                 break;
             case "webkit":
-                browser = playwright.webkit().launch(new BrowserType.LaunchOptions().setHeadless(false));
+                browser.set(playwright.get().webkit().launch(new BrowserType.LaunchOptions().setHeadless(false)));
                 break;
             case "chromium":
             default:
                 logger.warn("Unsupported browser type: {}. Defaulting to chromium", browserType);
-                browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+                browser.set(playwright.get().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)));
                 break;
         }
 
-        browserContext = browser.newContext(new Browser.NewContextOptions().setViewportSize(width, height));
-        page = browserContext.newPage();
-
+        context.set(browser.get().newContext(new Browser.NewContextOptions().setViewportSize(width, height)));
+        page.set(context.get().newPage());
         logger.info("Setting up Playwright completed");
     }
 
     public void tearDown() {
         logger.info("Tearing down Playwright initiated");
 
-        if (page != null) page.close();
-        if (browser != null) browser.close();
-        if (playwright != null) playwright.close();
+        if (page.get() != null) {
+            page.get().close();
+            page.remove();
+        }
+
+        if (context.get() != null) {
+            context.get().close();
+            context.remove();
+        }
+
+        if (browser.get() != null) {
+            browser.get().close();
+            browser.remove();
+        }
+
+        if (playwright.get() != null) {
+            playwright.get().close();
+            playwright.remove();
+        }
 
         logger.info("Tearing down Playwright completed");
     }

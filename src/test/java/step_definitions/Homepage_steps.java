@@ -15,21 +15,21 @@ public class Homepage_steps {
 
     @Given("I navigate to the webdriveruniversity homepage")
     public void iNavigateToTheWebdriverUniversityHomepage() {
-        browserManager.page.navigate("https://webdriveruniversity.com/");
+        browserManager.getPage().navigate("https://webdriveruniversity.com/");
     }
     @When("I click on the contact us button")
     public void iClickOnTheContactUsButton() {
-        browserManager.page = browserManager.browserContext.waitForPage(() ->
-                browserManager.page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions()
-                .setName("CONTACT US Contact Us Form")).click());
-        browserManager.page.bringToFront(); //point to new opened tab
+        browserManager.setPage(browserManager.getContext().waitForPage(() ->
+                browserManager.getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions()
+                .setName("CONTACT US Contact Us Form")).click()));
+        browserManager.getPage().bringToFront(); //point to new opened tab
     }
 
     @When("I click on the login portal button")
     public void iClickOnTheLoginPortalButton() {
-        browserManager.page = browserManager.browserContext.waitForPage(() ->
-                browserManager.page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions()
-                        .setName("LOGIN PORTAL Login Portal")).click());
-        browserManager.page.bringToFront(); //point to new opened tab
+        browserManager.setPage(browserManager.getContext().waitForPage(() ->
+                browserManager.getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions()
+                        .setName("LOGIN PORTAL Login Portal")).click()));
+        browserManager.getPage().bringToFront(); //point to new opened tab
     }
 }
