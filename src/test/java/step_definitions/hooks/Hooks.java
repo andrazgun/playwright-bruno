@@ -32,15 +32,6 @@ public class Hooks {
         logger.info("Executing setUp() (before test hook)");
     }
 
-    //    @After
-//    public void tearDown(Scenario scenario) {
-//        if (scenario.isFailed()) {
-//            byte[] screenshot = browserManager.takeScreenshot();
-//            scenario.attach(screenshot,"img/png","screenshot");
-//        }
-//        browserManager.tearDown();
-//        logger.info("Executing tearDown() (after test hook)");
-//    }
     @After
     public void tearDown(Scenario scenario) {
         if (scenario.isFailed()) {
