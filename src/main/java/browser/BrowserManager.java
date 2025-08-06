@@ -13,6 +13,14 @@ public class BrowserManager {
     public BrowserContext browserContext; //way to operate multiple independent browser sessions.
     public Browser browser; //represents the browser instance
 
+    public byte[] takeScreenshot() {
+        if (page != null) {
+            return page.screenshot();
+        }
+        logger.warn("Page is null; screenshot not taken.");
+        return null;
+    }
+
     public void setUp() {
         logger.info("Setting up Playwright initiated");
 

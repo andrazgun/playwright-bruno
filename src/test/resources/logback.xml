@@ -1,29 +1,15 @@
 <configuration>
-    <!-- Define a timestamp property for log file naming -->
-    <timestamp key="RUN_TIMESTAMP" datePattern="yyyy-MM-dd_HH-mm-ss" />
 
-    <!-- Set log folder -->
-    <property name="LOG_PATH" value="target/logs" />
-
-    <!-- File Appender with dynamic filename -->
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${LOG_PATH}/test-execution-${RUN_TIMESTAMP}.log</file>
-        <append>false</append> <!-- Do not append, create new file each run -->
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <!-- Console Appender (optional) -->
+    <!-- Console Appender for INFO and above -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- Root Logger -->
+    <!-- Root Logger: INFO level (includes WARN, ERROR, etc.) -->
     <root level="info">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="FILE" />
     </root>
+
 </configuration>
