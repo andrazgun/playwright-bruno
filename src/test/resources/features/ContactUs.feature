@@ -28,6 +28,7 @@ Feature: WebdriverUniversity.com - Contact Us Page
     And I type specific text "Hello" and number 123 within the comment input field
     And I click on the submit button
     Then I should be presented with a successful contact us submission message
+
   @random
   Scenario: Valid Contact Us Form Submission - Using Random Data
     When I type a random first name
@@ -45,7 +46,7 @@ Feature: WebdriverUniversity.com - Contact Us Page
     And I click on the submit button
     Then I should be presented with header text '<message>'
     Examples:
-      | firstName | lastName | emailAddress       | comment           | message                        |
-      | John      | Doe      | john_doe@email.com | hello how are you | Thank You for your Message!    |
-      | Mia       | Carter   | mia12@email.com    | Test 123          | Thank You for your Message!555 |
-      | Grace     | Hud      | grace hud112       | Nothing to add    | Error: Invalid email address   |
+      | firstName | lastName | emailAddress       | comment           | message                      |
+      | John      | Doe      | john_doe@email.com | hello how are you | Thank You for your Message!  |
+      | Mia       | Carter   | mia12@email.com    | Test 123          | Thank You for your Message!  |
+      | Grace     | Hud      | grace hud112       | Nothing to add    | Error: Invalid email address |

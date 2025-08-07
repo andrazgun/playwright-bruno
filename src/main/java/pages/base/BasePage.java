@@ -32,4 +32,8 @@ public class BasePage {
         locator.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         locator.click();
     }
+
+    public void navigate(String url) {
+        browserManager.getPage().navigate(url);
+    }
 }
