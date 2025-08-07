@@ -70,6 +70,8 @@ public class BrowserManager {
 
         String browserType = properties.getProperty("browser", "chromium").toLowerCase();
 
+        logger.info("Thread [{}] initializing browser: {}", Thread.currentThread().getId(), browserType);
+
         switch (browserType) {
             case "firefox":
                 browser.set(playwright.get().firefox().launch(new BrowserType.LaunchOptions().setHeadless(false)));
@@ -92,26 +94,24 @@ public class BrowserManager {
     public void tearDown() {
         logger.info("Tearing down Playwright initiated");
 
-        if (page.get() != null) {
-            page.get().close();
-            page.remove();
-        }
-
-        if (context.get() != null) {
-            context.get().close();
-            context.remove();
-        }
-
-        if (browser.get() != null) {
-            browser.get().close();
-            browser.remove();
-        }
-
-        if (playwright.get() != null) {
-            playwright.get().close();
-            playwright.remove();
-        }
+        closeAndRemove(page);
+        closeAndRemove(context);
+        closeAndRemove(browser);
+        closeAndRemove(playwright);
 
         logger.info("Tearing down Playwright completed");
+    }
+
+    private <T extends AutoCloseable> void closeAndRemove(ThreadLocal<T> threadLocal) {
+        T resource = threadLocal.get();
+        if (resource != null) {
+            try {
+                resource.close();
+            } catch (Exception e) {
+                logger.warn("Failed to close resource: {}", resource.getClass().getSimpleName(), e);
+            } finally {
+                threadLocal.remove();
+            }
+        }
     }
 }
