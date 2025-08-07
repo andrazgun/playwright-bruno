@@ -46,7 +46,7 @@ public class ContactUs_steps {
     @When("I click on the submit button")
     public void iClickOnTheSubmitButton() {
         // custom wait
-        Page.WaitForSelectorOptions options = new Page.WaitForSelectorOptions().setTimeout(1000);
+        Page.WaitForSelectorOptions options = new Page.WaitForSelectorOptions().setTimeout(1000); //1 sec
         //wait for the button to load
         browserManager.getPage().waitForSelector("input[value='SUBMIT']", options);
         // once loaded, click on button

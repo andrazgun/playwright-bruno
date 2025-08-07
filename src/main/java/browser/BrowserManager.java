@@ -64,30 +64,21 @@ public class BrowserManager {
             playwright.set(Playwright.create());
         }
 
+        launchBrowser();
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth();
         int height = (int) screenSize.getHeight();
 
-        String browserType = properties.getProperty("browser", "chromium").toLowerCase();
-
-        logger.info("Thread [{}] initializing browser: {}", Thread.currentThread().getId(), browserType);
-
-        switch (browserType) {
-            case "firefox":
-                browser.set(playwright.get().firefox().launch(new BrowserType.LaunchOptions().setHeadless(false)));
-                break;
-            case "webkit":
-                browser.set(playwright.get().webkit().launch(new BrowserType.LaunchOptions().setHeadless(false)));
-                break;
-            case "chromium":
-            default:
-                logger.warn("Unsupported browser type: {}. Defaulting to chromium", browserType);
-                browser.set(playwright.get().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)));
-                break;
-        }
-
         context.set(browser.get().newContext(new Browser.NewContextOptions().setViewportSize(width, height)));
         page.set(context.get().newPage());
+
+        //custom timeouts
+        int navigationTimeout = Integer.parseInt(properties.getProperty("navigation.timeout", "30000"));
+        int actionTimeout = Integer.parseInt(properties.getProperty("action.timeout", "15000"));
+        page.get().setDefaultNavigationTimeout(navigationTimeout);
+        page.get().setDefaultTimeout(actionTimeout);
+
         logger.info("Setting up Playwright completed");
     }
 
@@ -100,6 +91,25 @@ public class BrowserManager {
         closeAndRemove(playwright);
 
         logger.info("Tearing down Playwright completed");
+    }
+
+    private void launchBrowser() {
+        String browserType = properties.getProperty("browser", "chromium").toLowerCase();
+        logger.info("Thread [{}] initializing browser: {}", Thread.currentThread().getId(), browserType);
+
+        BrowserType playwrightBrowserType;
+        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(false);
+
+        playwrightBrowserType = switch (browserType) {
+            case "firefox" -> playwright.get().firefox();
+            case "webkit" -> playwright.get().webkit();
+            default -> {
+                logger.warn("Unsupported browser type: {}. Defaulting to chromium", browserType);
+                yield playwright.get().chromium();
+            }
+        };
+
+        browser.set(playwrightBrowserType.launch(launchOptions));
     }
 
     private <T extends AutoCloseable> void closeAndRemove(ThreadLocal<T> threadLocal) {
