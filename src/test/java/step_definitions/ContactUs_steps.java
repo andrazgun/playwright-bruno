@@ -3,6 +3,7 @@ package step_definitions;
 import browser.BrowserManager;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import context.PersonContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -18,9 +19,11 @@ import static org.testng.Assert.assertTrue;
 public class ContactUs_steps {
     public BrowserManager browserManager;
     private final Faker faker = new Faker();
+    private final PersonContext personContext;
 
-    public ContactUs_steps(BrowserManager browserManager) {
+    public ContactUs_steps(BrowserManager browserManager, PersonContext personContext) {
         this.browserManager = browserManager;
+        this.personContext = personContext;
     }
 
     @When("I type a first name")
@@ -77,19 +80,29 @@ public class ContactUs_steps {
     @And("I type a random first name")
     public void iTypeARandomFirstName() {
         String randomFirstName = faker.name().firstName();
+        personContext.setRandomFirstName(randomFirstName); //Store in personContext
         browserManager.getPage().getByPlaceholder("First Name").fill(randomFirstName);
     }
 
     @And("I type a random last name")
     public void iTypeARandomLastName() {
         String randomLastName = faker.name().lastName();
+        personContext.setRandomLastName(randomLastName); //Store in personContext
         browserManager.getPage().getByPlaceholder("Last Name").fill(randomLastName);
     }
 
     @And("I enter a random email address")
     public void iEnterARandomEmailAddress() {
         String randomEmailAddress = faker.internet().emailAddress();
+        personContext.setRandomEmailAddress(randomEmailAddress); //Store in personContext
         browserManager.getPage().getByPlaceholder("Email Address").fill(randomEmailAddress);
+    }
+
+    @And("I type a random comment")
+    public void iTypeARandomComment() {
+        browserManager.getPage().getByPlaceholder("Comments").fill("Hi, my details: "
+        + "\n" + personContext.getRandomFirstName() + " " + personContext.getRandomLastName()
+        + " " + personContext.getRandomEmailAddress());
     }
 
     @Then("I should be presented with a successful contact us submission message")

@@ -28,12 +28,13 @@ Feature: WebdriverUniversity.com - Contact Us Page
     And I type specific text "Hello" and number 123 within the comment input field
     And I click on the submit button
     Then I should be presented with a successful contact us submission message
-
+  @random
   Scenario: Valid Contact Us Form Submission - Using Random Data
     When I type a random first name
     And I type a random last name
     And I enter a random email address
-    And I type a comment
+#    And I type a comment
+    And I type a random comment
     And I click on the submit button
     Then I should be presented with a successful contact us submission message
 
