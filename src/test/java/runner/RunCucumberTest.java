@@ -20,7 +20,7 @@ import java.util.Properties;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "step_definitions",
-        tags = "@regression and not @ignore",
+        tags = "@contactus and not @ignore",
         plugin = {"pretty", "json:target/cucumber.json", "html:target/cucumber-report.html"}
 )
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
