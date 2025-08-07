@@ -1,10 +1,7 @@
 package step_definitions.hooks;
 
 import browser.BrowserManager;
-import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
-import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
+import io.cucumber.java.*;
 import org.slf4j.Logger;
 import support.LogUtil;
 
@@ -36,8 +33,18 @@ public class Hooks {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown(Scenario scenario) {
+        if (scenario.isFailed()) {
+            byte[] screenshot = browserManager.takeScreenshot();
+            if (screenshot != null && screenshot.length > 0) {
+                scenario.attach(screenshot, "image/png", "screenshot");
+            } else {
+                logger.warn("Screenshot not attached; no valid screenshot data.");
+            }
+        }
         browserManager.tearDown();
         logger.info("Executing tearDown() (after test hook)");
     }
+
+
 }
