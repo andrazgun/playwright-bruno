@@ -1,50 +1,45 @@
 package step_definitions;
 
-import browser.BrowserManager;
-import com.microsoft.playwright.Locator;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.testng.Assert;
+import pages.LoginPage;
+import session.SessionKeys;
+
+import static pages.base.BasePage.scenarioSession;
 
 public class LoginPage_steps {
-    public BrowserManager browserManager;
-    private String alertText;
+    private final LoginPage loginPage;
 
-    public LoginPage_steps(BrowserManager browserManager) {
-        this.browserManager = browserManager;
+    public LoginPage_steps(LoginPage loginPage) {
+        this.loginPage = loginPage;
     }
 
     @When("I type a user name {string}")
     public void iTypeAUserName(String username) {
-        browserManager.getPage().getByPlaceholder("Username").fill(username);
+        loginPage.typeUsername(username);
     }
 
     @When("I type a password {string}")
     public void iTypeAPassword(String password) {
-        browserManager.getPage().getByPlaceholder("Password").fill(password);
+        loginPage.typePassword(password);
     }
 
     @When("I type a user name {string} and a password {string}")
     public void iTypeAUserNameUsernameAndAPasswordPassword(String username, String password) {
-        browserManager.getPage().getByPlaceholder("Username").fill(username);
-        browserManager.getPage().getByPlaceholder("Password").fill(password);
+        loginPage.typeUsername(username);
+        loginPage.typePassword(password);
     }
 
     @And("I click on the login button")
     public void iClickOnTheLoginButton() {
-        browserManager.getPage().onceDialog(dialog -> {
-            alertText = dialog.message();
-            dialog.accept();
-        });
-        Locator loginButton = browserManager.getPage().locator("#login-button");
-        loginButton.hover();
-        loginButton.click(new Locator.ClickOptions().setForce(true));
-//        browserManager.page.getByText("Login").click();
+        loginPage.clickLoginBtn();
     }
 
     @Then("I should be presented with an alert box which contains text {string}")
     public void iShouldBePresentedWithAnAlertBoxWhichContainsTextExpectedAlertText(String expectedAlertText) {
+        String alertText = scenarioSession.get(SessionKeys.ALERT_TEXT, String.class);
         Assert.assertEquals(alertText, expectedAlertText, "Text doesn't match");
     }
 }

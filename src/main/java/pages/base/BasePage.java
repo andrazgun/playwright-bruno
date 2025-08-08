@@ -5,12 +5,15 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import session.ScenarioSession;
 
 public class BasePage {
     private final BrowserManager browserManager;
+    public static ScenarioSession scenarioSession;
 
     public BasePage(BrowserManager browserManager) {
         this.browserManager = browserManager;
+        scenarioSession = new ScenarioSession();
     }
 
     //In Java, "protected" means that the member can be accessed by classes in the same package or subclasses.
