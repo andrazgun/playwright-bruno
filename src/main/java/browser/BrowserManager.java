@@ -94,7 +94,8 @@ public class BrowserManager {
     }
 
     private void launchBrowser() {
-        String browserType = properties.getProperty("browser", "chromium").toLowerCase();
+//        String browserType = properties.getProperty("browser", "chromium").toLowerCase();
+        String browserType = System.getProperty("BROWSER", properties.getProperty("browser", "chromium")).toLowerCase(); // Get browser type from Jenkins parameter, with a fallback to config file, then to "chromium"
         logger.info("Thread [{}] initializing browser: {}", Thread.currentThread().getId(), browserType);
 
         BrowserType playwrightBrowserType;

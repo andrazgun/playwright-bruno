@@ -71,10 +71,15 @@ public class RunCucumberTest extends AbstractTestNGCucumberTests {
 
     //get thread count from the config file
     private static int getThreadCount() {
+        // Get the thread count. It first checks for a Jenkins parameter named "THREAD_COUNT".
+        // If not found, it falls back to a property "thread.count" from the config file.
+        // If that's also not found, it defaults to "1".
+        String threadCountString = System.getProperty("THREAD_COUNT", properties.getProperty("thread.count", "1"));
         try {
-            return Integer.parseInt(properties.getProperty("thread.count", "1"));
+            return Integer.parseInt(threadCountString);
         } catch (NumberFormatException e) {
-            logger.warn("Invalid thread.count in config.properties. Falling back to 1.");
+            // Log a warning if the value from any source is not a valid number, and use the default of 1.
+            logger.warn("Invalid thread count value: '{}'. Falling back to 1.", threadCountString);
             return 1;
         }
     }
