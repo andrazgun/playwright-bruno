@@ -98,7 +98,7 @@ public class BrowserManager {
         logger.info("Thread [{}] initializing browser: {}", Thread.currentThread().getId(), browserType);
 
         BrowserType playwrightBrowserType;
-        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(false);
+        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(true);
 
         playwrightBrowserType = switch (browserType) {
             case "firefox" -> playwright.get().firefox();
