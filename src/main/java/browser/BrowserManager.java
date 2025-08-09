@@ -62,7 +62,6 @@ public class BrowserManager {
 
     public void setUp() {
         logger.info("Setting up Playwright initiated");
-        logger.info("setHeadless[{}]", HEADLESS_MODE);
 
         if (playwright.get() == null) {
             playwright.set(Playwright.create());
