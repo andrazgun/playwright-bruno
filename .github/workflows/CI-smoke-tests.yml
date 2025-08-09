@@ -1,4 +1,4 @@
-name: Run Smoke Tests
+name: Smoke Tests and Publish Cucumber Report
 
 on:
   push:
@@ -13,11 +13,22 @@ env:
   THREAD_COUNT: "2"    # default parallel threads
   BROWSER: "chromium"  # default browser
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   smoke-tests:
     name: Run Smoke Tests
     runs-on: ubuntu-latest
-
+    outputs:
+      # pass test result to next job if needed
+      test-result: ${{ job.status }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,7 +39,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      #Install Maven 3.9.9
       - name: Setup Maven Action
         uses: s4u/setup-maven-action@v1.7.0
         with:
@@ -37,7 +47,6 @@ jobs:
           java-distribution: temurin
           maven-version: 3.9.9
 
-      #Verify Maven installation
       - name: Verify Maven version
         run: mvn --version
 
@@ -62,13 +71,6 @@ jobs:
             -Ddataproviderthreadcount=${THREAD_COUNT} \
             -DBROWSER=${BROWSER}
 
-      - name: Upload Cucumber JSON Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cucumber-json-report
-          path: target/cucumber-report
-
       - name: Upload Cucumber HTML Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -76,13 +78,28 @@ jobs:
           name: cucumber-html-report
           path: target/cucumber-report
 
-      # Publish to GitHub Pages
+  deploy-pages:
+    name: Deploy Cucumber Report to GitHub Pages
+    needs: smoke-tests
+    runs-on: ubuntu-latest
+    if: always()  # run even if smoke-tests fails, you can change to only run on success by using `if: success()`
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: List downloaded report directory contents
+        run: ls -lR target/cucumber-report
+
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: target/cucumber-report
 
-      - name: Configure GitHub Pages
+      - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Deploy to GitHub Pages
