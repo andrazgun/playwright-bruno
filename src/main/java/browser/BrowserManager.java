@@ -98,10 +98,26 @@ public class BrowserManager {
         String browserType = System.getProperty("BROWSER", properties.getProperty("browser", "chromium")).toLowerCase(); // Get browser type from Jenkins parameter, with a fallback to config file, then to "chromium"
         logger.info("Thread [{}] initializing browser: {}", Thread.currentThread().getId(), browserType);
 
-        BrowserType playwrightBrowserType;
-        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(false);
+//        BrowserType playwrightBrowserType;
+//        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(false);
+//
+//        playwrightBrowserType = switch (browserType) {
+//            case "firefox" -> playwright.get().firefox();
+//            case "webkit" -> playwright.get().webkit();
+//            default -> {
+//                logger.warn("Unsupported browser type: {}. Defaulting to chromium", browserType);
+//                yield playwright.get().chromium();
+//            }
+//        };
 
-        playwrightBrowserType = switch (browserType) {
+        // Detect if running on CI environment (GitHub Actions sets CI=true)
+        boolean isCI = Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
+        logger.info("Running in CI environment: {}. Setting headless mode to {}", isCI, isCI);
+
+        // Override headless to true if running on CI, otherwise false
+        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(isCI);
+
+        BrowserType playwrightBrowserType = switch (browserType) {
             case "firefox" -> playwright.get().firefox();
             case "webkit" -> playwright.get().webkit();
             default -> {
