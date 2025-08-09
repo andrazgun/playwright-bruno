@@ -26,11 +26,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-#      - name: Download Cucumber Report artifact
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: cucumber-report
-#          path: ./report
+      - name: Download Cucumber Report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: cucumber-report
+          path: ./report
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -38,7 +38,7 @@ jobs:
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./report/target
+          path: ./report
 
       - name: Deploy to GitHub Pages
         id: deployment
