@@ -85,6 +85,9 @@ jobs:
           name: cucumber-html-report
           path: target/cucumber-report
 
+      - name: List target/cucumber-report report directory contents
+        run: ls -lR ./target/cucumber-report
+
   deploy-pages:
     name: Deploy Cucumber Report to GitHub Pages
     needs: smoke-tests
@@ -98,8 +101,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: List downloaded report directory contents
+        run: ls -lR ./target/cucumber-report
+
       - name: Download Cucumber HTML Report artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: cucumber-html-report
           path: ./target/cucumber-report
