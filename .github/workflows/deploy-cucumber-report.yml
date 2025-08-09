@@ -26,6 +26,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: List target directory contents
+        run: ls -R target
+
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:

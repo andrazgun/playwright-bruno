@@ -67,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cucumber-json-report
-          path: target/cucumber/cucumber.json
+          path: target/cucumber-report
 
       - name: Upload Cucumber HTML Report
         if: always()
