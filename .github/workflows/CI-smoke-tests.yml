@@ -14,7 +14,7 @@ env:
   BROWSER: "chromium"  # default browser
 
 jobs:
-  playwright-smoke-tests:
+  smoke-tests:
     name: Run Smoke Tests
     runs-on: ubuntu-latest
 
@@ -66,5 +66,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cucumber-html-report
+          name: cucumber-report
           path: target/cucumber-report.html
