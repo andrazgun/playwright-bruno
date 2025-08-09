@@ -92,12 +92,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: List downloaded report directory contents
-        run: ls -lR /target/cucumber-report
+        run: ls -lR target/cucumber-report
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: /target/cucumber-report
+          path: target/cucumber-report
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
