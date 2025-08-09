@@ -18,7 +18,6 @@ public class BrowserManager {
             Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
 
     private final Properties properties;
-//    private final boolean HEADLESS_MODE;
 
     // A ThreadLocal is like a personal locker for each thread, so they don't share data with other threads.
     // Think of threads as individual workers in a factory, each with their own toolbox (ThreadLocal).
@@ -39,9 +38,6 @@ public class BrowserManager {
             logger.error("Failed to load config.properties", e);
             throw new RuntimeException("Unable to load configuration", e);
         }
-
-        // Initialize isCI once
-//        HEADLESS_MODE = Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
     }
 
     public Page getPage() {
