@@ -70,12 +70,6 @@ public class BrowserManager {
 
         launchBrowser();
 
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        int width = (int) screenSize.getWidth();
-//        int height = (int) screenSize.getHeight();
-
-//        boolean isCI = Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
-
         int width = HEADLESS_MODE ? 1920 : (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         int height = HEADLESS_MODE ? 1080 : (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
@@ -105,24 +99,9 @@ public class BrowserManager {
     }
 
     private void launchBrowser() {
-//        String browserType = properties.getProperty("browser", "chromium").toLowerCase();
         String browserType = System.getProperty("BROWSER", properties.getProperty("browser", "chromium")).toLowerCase(); // Get browser type from Jenkins parameter, with a fallback to config file, then to "chromium"
         logger.info("Thread [{}] initializing browser: {}", Thread.currentThread().getId(), browserType);
 
-//        BrowserType playwrightBrowserType;
-//        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(false);
-//
-//        playwrightBrowserType = switch (browserType) {
-//            case "firefox" -> playwright.get().firefox();
-//            case "webkit" -> playwright.get().webkit();
-//            default -> {
-//                logger.warn("Unsupported browser type: {}. Defaulting to chromium", browserType);
-//                yield playwright.get().chromium();
-//            }
-//        };
-
-        // Detect if running on CI environment (GitHub Actions sets CI=true)
-//        boolean isCI = Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
         logger.info("Running in CI environment: {}. Setting headless mode to {}", HEADLESS_MODE, HEADLESS_MODE);
 
         // Override headless to true if running on CI, otherwise false
