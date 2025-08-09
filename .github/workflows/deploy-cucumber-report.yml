@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: '.target/cucumber-report'  # Adjust to your report folder path
 
