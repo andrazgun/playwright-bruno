@@ -15,6 +15,7 @@ public class BrowserManager {
 
     private static final Logger logger = LogUtil.getLogger(BrowserManager.class);
     private final Properties properties;
+    private final boolean HEADLESS_MODE;
 
     // A ThreadLocal is like a personal locker for each thread, so they don't share data with other threads.
     // Think of threads as individual workers in a factory, each with their own toolbox (ThreadLocal).
@@ -35,6 +36,9 @@ public class BrowserManager {
             logger.error("Failed to load config.properties", e);
             throw new RuntimeException("Unable to load configuration", e);
         }
+
+        // Initialize isCI once
+        HEADLESS_MODE = Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
     }
 
     public Page getPage() {
@@ -66,9 +70,16 @@ public class BrowserManager {
 
         launchBrowser();
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screenSize.getWidth();
-        int height = (int) screenSize.getHeight();
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        int width = (int) screenSize.getWidth();
+//        int height = (int) screenSize.getHeight();
+
+//        boolean isCI = Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
+
+        int width = HEADLESS_MODE ? 1920 : (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        int height = HEADLESS_MODE ? 1080 : (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+
+        logger.info("Viewport size set to: {}x{}", width, height);
 
         context.set(browser.get().newContext(new Browser.NewContextOptions().setViewportSize(width, height)));
         page.set(context.get().newPage());
@@ -111,11 +122,11 @@ public class BrowserManager {
 //        };
 
         // Detect if running on CI environment (GitHub Actions sets CI=true)
-        boolean isCI = Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
-        logger.info("Running in CI environment: {}. Setting headless mode to {}", isCI, isCI);
+//        boolean isCI = Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
+        logger.info("Running in CI environment: {}. Setting headless mode to {}", HEADLESS_MODE, HEADLESS_MODE);
 
         // Override headless to true if running on CI, otherwise false
-        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(isCI);
+        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(HEADLESS_MODE);
 
         BrowserType playwrightBrowserType = switch (browserType) {
             case "firefox" -> playwright.get().firefox();
