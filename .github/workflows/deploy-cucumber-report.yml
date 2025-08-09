@@ -26,13 +26,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: List target directory contents
-        run: ls -R target
+      # Download the cucumber HTML report artifact uploaded in the previous workflow
+      - name: Download Cucumber HTML Report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: cucumber-html-report
+          path: ./cucumber-report
+
+      - name: List downloaded report directory contents
+        run: ls -R ./cucumber-report
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'target/cucumber-report'  # Adjust to your report folder path
+          path: ./cucumber-report
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
