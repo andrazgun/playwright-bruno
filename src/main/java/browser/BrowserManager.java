@@ -14,8 +14,11 @@ import java.util.Properties;
 public class BrowserManager {
 
     private static final Logger logger = LogUtil.getLogger(BrowserManager.class);
+    private static final boolean HEADLESS_MODE =
+            Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
+
     private final Properties properties;
-    private final boolean HEADLESS_MODE;
+//    private final boolean HEADLESS_MODE;
 
     // A ThreadLocal is like a personal locker for each thread, so they don't share data with other threads.
     // Think of threads as individual workers in a factory, each with their own toolbox (ThreadLocal).
@@ -38,7 +41,7 @@ public class BrowserManager {
         }
 
         // Initialize isCI once
-        HEADLESS_MODE = Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
+//        HEADLESS_MODE = Boolean.parseBoolean(System.getenv().getOrDefault("CI", "false"));
     }
 
     public Page getPage() {
@@ -63,6 +66,7 @@ public class BrowserManager {
 
     public void setUp() {
         logger.info("Setting up Playwright initiated");
+        logger.info("setHeadless[{}]", HEADLESS_MODE);
 
         if (playwright.get() == null) {
             playwright.set(Playwright.create());
@@ -102,7 +106,7 @@ public class BrowserManager {
         String browserType = System.getProperty("BROWSER", properties.getProperty("browser", "chromium")).toLowerCase(); // Get browser type from Jenkins parameter, with a fallback to config file, then to "chromium"
         logger.info("Thread [{}] initializing browser: {}", Thread.currentThread().getId(), browserType);
 
-        logger.info("Running in CI environment: {}. Setting headless mode to {}", HEADLESS_MODE, HEADLESS_MODE);
+        logger.info("Running in CI environment: {}. setHeadless[{}]", HEADLESS_MODE, HEADLESS_MODE);
 
         // Override headless to true if running on CI, otherwise false
         BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions().setHeadless(HEADLESS_MODE);
