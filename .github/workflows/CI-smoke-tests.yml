@@ -65,16 +65,16 @@ jobs:
       - name: List target directory content
         run: ls -R target
 
-#      - name: Upload Cucumber JSON Report
-#        if: always()
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: cucumber-json-report
-#          path: target/cucumber/cucumber.json
-#
-#      - name: Upload Cucumber HTML Report
-#        if: always()
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: cucumber-html-report
-#          path: target/cucumber-report
+      - name: Upload Cucumber JSON Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-json-report
+          path: target/cucumber/cucumber.json
+
+      - name: Upload Cucumber HTML Report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-html-report
+          path: target/cucumber-report
