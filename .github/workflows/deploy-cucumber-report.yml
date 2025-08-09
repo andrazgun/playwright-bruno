@@ -2,9 +2,6 @@ name: Deploy Cucumber Report to GitHub Pages
 
 on:
   workflow_run:
-    workflows: ["Run Smoke Tests"]
-    types:
-      - completed
 
 permissions:
   contents: read
