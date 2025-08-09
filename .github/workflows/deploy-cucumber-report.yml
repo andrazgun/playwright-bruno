@@ -1,7 +1,7 @@
 name: Deploy Cucumber Report to GitHub Pages
 
 on:
-  workflow_run:
+  workflow_dispatch:
 
 permissions:
   contents: read
