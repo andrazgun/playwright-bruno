@@ -62,7 +62,7 @@ jobs:
             -Ddataproviderthreadcount=${THREAD_COUNT} \
             -DBROWSER=${BROWSER}
 
-      - name: Upload Cucumber HTML Report
+      - name: Upload Cucumber HTML Report artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
