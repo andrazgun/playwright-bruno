@@ -1,4 +1,4 @@
-name: Run ${TAG} Tests
+name: Run Smoke Tests
 
 on:
   push:
@@ -15,7 +15,7 @@ env:
 
 jobs:
   playwright-smoke-tests:
-    name: Run ${TAG} Tests on ${BROWSER} with ${THREAD_COUNT} Threads
+    name: Run Smoke Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Run tests
         run: |
-          echo "Running tests with TAG=${TAG}, THREAD_COUNT=${THREAD_COUNT}, BROWSER=${BROWSER}"
+#          echo "Running tests with TAG=${TAG}, THREAD_COUNT=${THREAD_COUNT}, BROWSER=${BROWSER}"
           mvn clean compile test \
             -Dcucumber.filter.tags="(${TAG} and (not @ignore))" \
             -Ddataproviderthreadcount=${THREAD_COUNT} \
