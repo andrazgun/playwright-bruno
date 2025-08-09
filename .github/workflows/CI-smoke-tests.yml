@@ -75,3 +75,16 @@ jobs:
         with:
           name: cucumber-html-report
           path: target/cucumber-report
+
+      # Publish to GitHub Pages
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/cucumber-report
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
