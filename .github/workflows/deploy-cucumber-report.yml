@@ -26,14 +26,6 @@ jobs:
       - name: List all files in the repository
         run: ls -lR ./
 
-
-      # Download the cucumber HTML report artifact uploaded in the previous workflow
-#      - name: Download Cucumber HTML Report artifact
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: cucumber-html-report
-#          path: ./cucumber-report
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
