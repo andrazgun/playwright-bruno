@@ -1,4 +1,4 @@
-name: Run Playwright Cucumber Tests
+name: Run ${{ env.TAG }} Tests
 
 on:
   push:
@@ -14,7 +14,8 @@ env:
   BROWSER: "chromium"  # default browser
 
 jobs:
-  test:
+  playwright-smoke-tests:
+    name: Run ${{ env.TAG }} Tests on ${{ env.BROWSER }} with ${{ env.THREAD_COUNT }} Threads
     runs-on: ubuntu-latest
 
     steps:

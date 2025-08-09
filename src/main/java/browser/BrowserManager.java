@@ -66,7 +66,6 @@ public class BrowserManager {
 
     public void setUp() {
         logger.info("Setting up Playwright initiated");
-        logger.info("setHeadless[{}]", HEADLESS_MODE);
 
         if (playwright.get() == null) {
             playwright.set(Playwright.create());
@@ -113,6 +112,7 @@ public class BrowserManager {
 
         BrowserType playwrightBrowserType = switch (browserType) {
             case "firefox" -> playwright.get().firefox();
+            case "chromium" -> playwright.get().chromium();
             case "webkit" -> playwright.get().webkit();
             default -> {
                 logger.warn("Unsupported browser type: {}. Defaulting to chromium", browserType);
