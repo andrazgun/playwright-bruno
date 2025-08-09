@@ -57,7 +57,6 @@ jobs:
 
       - name: Run tests
         run: |
-#          echo "Running tests with TAG=${TAG}, THREAD_COUNT=${THREAD_COUNT}, BROWSER=${BROWSER}"
           mvn clean compile test \
             -Dcucumber.filter.tags="(${TAG} and (not @ignore))" \
             -Ddataproviderthreadcount=${THREAD_COUNT} \
