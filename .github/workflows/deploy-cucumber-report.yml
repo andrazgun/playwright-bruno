@@ -29,7 +29,7 @@ jobs:
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'target/cucumber-report/index.html'  # Adjust to your report folder path
+          path: 'target/cucumber-report'  # Adjust to your report folder path
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
