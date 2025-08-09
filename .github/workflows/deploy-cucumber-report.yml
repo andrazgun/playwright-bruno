@@ -23,23 +23,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Download the cucumber HTML report artifact uploaded in the previous workflow
-      - name: Download Cucumber HTML Report artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: cucumber-html-report
-          path: ./cucumber-report
+      - name: List all files in the repository
+        run: ls -lR ./
 
-      - name: List downloaded report directory contents
-        run: ls -R ./cucumber-report
+
+      # Download the cucumber HTML report artifact uploaded in the previous workflow
+#      - name: Download Cucumber HTML Report artifact
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: cucumber-html-report
+#          path: ./cucumber-report
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./cucumber-report
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+          path: ./target/cucumber-report
 
       - name: Deploy to GitHub Pages
         id: deployment
