@@ -76,7 +76,7 @@ jobs:
         if: always()
         run: |
           mkdir -p docs
-          cp -r target/cucumber-reports docs/cucumber-reports
+          cp target/cucumber-reports/cucumber-html-reports/overview-features.html docs/index.html
 
       - name: List files in docs directory
         if: always()
