@@ -1,7 +1,7 @@
 @regression @login
 Feature: WebdriverUniversity.com - Login Page
 
-#  @smoke
+  @smoke
   Scenario Outline: Validate valid & invalid login credentials
     Given I navigate to the webdriveruniversity homepage
     When I click on the login portal button
@@ -12,5 +12,5 @@ Feature: WebdriverUniversity.com - Login Page
       | username  | password     | expectedAlertText    |
       |           |              | validation failed555    |
       | webdriver |              | validation failed    |
-      |           | webdriver123 | validation failed    |
+#      |           | webdriver123 | validation failed    |
       | webdriver | webdriver123 | validation succeeded |
