@@ -68,13 +68,18 @@ jobs:
             -Ddataproviderthreadcount=${THREAD_COUNT} \
             -DBROWSER=${BROWSER}
 
-      - name: Upload Cucumber HTML Report
+      # This is the key change: create a 'docs' directory and copy the report files into it.
+      - name: Copy report to docs
         if: always()
-        uses: actions/upload-artifact@v4
+        run: |
+          mkdir -p docs
+          cp -r target/cucumber-report/* docs/
+
+      - name: Upload Pages Artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages
-          path: target/cucumber-report
-          retention-days: 1
+          path: docs/
 
   deploy-pages:
     name: Deploy Cucumber Report to GitHub Pages
@@ -88,16 +93,16 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Download Cucumber HTML Report artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-          path: ./
-
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./
+#      - name: Download Cucumber HTML Report artifact
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: github-pages
+#          path: ./
+#
+#      - name: Upload Pages Artifact
+#        uses: actions/upload-pages-artifact@v3
+#        with:
+#          path: ./
 
       - name: Deploy to GitHub Pages
         id: deployment
