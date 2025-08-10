@@ -76,7 +76,7 @@ jobs:
         if: always()
         run: |
           mkdir -p docs
-          cp target/cucumber-reports/cucumber-html-reports/overview-features.html docs/index.html
+          cp -r target/cucumber-reports docs/
 
       - name: List files in docs directory
         if: always()
@@ -87,7 +87,7 @@ jobs:
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/
+          path: target/cucumber-reports
 
   deploy-pages:
     name: Cucumber Report to GH Pages
