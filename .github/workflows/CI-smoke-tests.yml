@@ -72,22 +72,18 @@ jobs:
         if: always()
         run: mvn exec:java -Dexec.mainClass="reportsGenerator.CucumberReportGenerator"
 
-      - name: Copy report to docs
+      - name: Copy HTML report to docs
         if: always()
         run: |
           mkdir -p docs
-          cp -r target/cucumber-reports docs/
-
-      - name: List files in docs directory
-        if: always()
-        run: |
-          ls -R docs/
+          cp -r target/cucumber-reports/cucumber-html-reports/. docs/
+          mv docs/overview-features.html docs/index.html
 
       - name: Upload Pages Artifact
         if: always()
         uses: actions/upload-pages-artifact@v3
         with:
-          path: target/cucumber-reports
+          path: docs/
 
   deploy-pages:
     name: Cucumber Report to GH Pages
