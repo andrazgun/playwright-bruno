@@ -21,7 +21,9 @@ import java.util.Properties;
         features = "src/test/resources/features",
         glue = "step_definitions",
         tags = "@smoke and not @ignore",
-        plugin = {"pretty", "json:target/cucumber.json", "html:target/cucumber-report.html"}
+        plugin = {"pretty", "json:target/cucumber.json"
+//                , "html:target/cucumber-report.html"
+        }
 )
 public class RunCucumberTest extends AbstractTestNGCucumberTests {
 
