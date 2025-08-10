@@ -68,11 +68,15 @@ jobs:
             -Ddataproviderthreadcount=${THREAD_COUNT} \
             -DBROWSER=${BROWSER}
 
+      - name: Generate cucumber HTML report
+        if: always()
+        run: mvn exec:java -Dexec.mainClass="reportsGenerator.CucumberReportGenerator"
+
       - name: Copy report to docs
         if: always()
         run: |
           mkdir -p docs
-          cp -r target/cucumber-report.html docs/index.html
+          cp -r target/cucumber-reports docs/cucumber-reports
 
       - name: Upload Pages Artifact
         if: always()

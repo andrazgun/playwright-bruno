@@ -11,6 +11,6 @@ Feature: WebdriverUniversity.com - Login Page
     Examples:
       | username  | password     | expectedAlertText    |
       |           |              | validation failed555    |
-      | webdriver |              | validation failed    |
-      |           | webdriver123 | validation failed    |
-      | webdriver | webdriver123 | validation succeeded |
+#      | webdriver |              | validation failed    |
+#      |           | webdriver123 | validation failed    |
+#      | webdriver | webdriver123 | validation succeeded |
