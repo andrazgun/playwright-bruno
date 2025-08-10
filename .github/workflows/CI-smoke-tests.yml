@@ -26,9 +26,6 @@ jobs:
   smoke-tests:
     name: Run Smoke Tests
     runs-on: ubuntu-latest
-    outputs:
-      # pass test result to next job if needed
-      test-result: ${{ job.status }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -75,38 +72,32 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cucumber-html-report
+          name: github-pages
           path: target/cucumber-report
+          retention-days: 1
 
   deploy-pages:
     name: Deploy Cucumber Report to GitHub Pages
     needs: smoke-tests
     runs-on: ubuntu-latest
-    if: always()  # run even if smoke-tests fails, you can change to only run on success by using `if: success()`
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: List downloaded report directory contents
-        run: ls -lR target/cucumber-report
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - name: Download Cucumber HTML Report artifact
         uses: actions/download-artifact@v4
         with:
-          name: cucumber-html-report
-          path: target/cucumber-report
+          name: github-pages
+          path: ./
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: target/cucumber-report
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+          path: ./
 
       - name: Deploy to GitHub Pages
         id: deployment
