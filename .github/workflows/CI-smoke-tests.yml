@@ -84,6 +84,7 @@ jobs:
     name: Cucumber Report to GH Pages
     needs: smoke-tests
     runs-on: ubuntu-latest
+    if: always() # This condition ensures the job runs regardless of the outcome of 'smoke-tests'.
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
