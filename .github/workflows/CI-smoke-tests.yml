@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - master
+      - hp
   pull_request:
     branches:
       - master
+      - hp
 
 env:
   TAG: "@smoke"        # default tag filter
