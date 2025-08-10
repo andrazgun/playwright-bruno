@@ -74,15 +74,7 @@ jobs:
         if: always()
         run: mvn exec:java -Dexec.mainClass="reportsGenerator.CucumberReportGenerator"
 
-      - name: Upload HTML report as artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cucumber-html-report
-          path: target/cucumber-html-reports/
-          retention-days: 7
-
-      - name: Prepare Pages content
+      - name: Copy HTML report to docs
         if: always()
         run: |
           mkdir -p docs
