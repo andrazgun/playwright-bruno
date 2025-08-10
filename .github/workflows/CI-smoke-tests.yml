@@ -68,15 +68,11 @@ jobs:
             -Ddataproviderthreadcount=${THREAD_COUNT} \
             -DBROWSER=${BROWSER}
 
-      - name: Generate Cucumber Report
-        if: always() # Run this step even if tests fail, so you get the report.
-        run: mvn cucumber-reporting:generate
-
       - name: Copy report to docs
         if: always()
         run: |
           mkdir -p docs
-          cp -r target/cucumber-report docs/
+          cp -r target/cucumber-report.html docs/index.html
 
       - name: Upload Pages Artifact
         if: always()
