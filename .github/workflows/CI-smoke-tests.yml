@@ -78,6 +78,11 @@ jobs:
           mkdir -p docs
           cp -r target/cucumber-reports docs/cucumber-reports
 
+      - name: List files in docs directory
+        if: always()
+        run: |
+          ls -R docs/
+
       - name: Upload Pages Artifact
         if: always()
         uses: actions/upload-pages-artifact@v3
