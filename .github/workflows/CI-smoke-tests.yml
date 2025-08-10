@@ -1,4 +1,4 @@
-name: Smoke Tests and Publish Cucumber Report
+name: Run Smoke Tests and Create Report
 
 on:
   push:
@@ -84,20 +84,3 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/
-
-  deploy-pages:
-    name: Cucumber Report to GH Pages
-    needs: smoke-tests
-    runs-on: ubuntu-latest
-    if: always()
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
