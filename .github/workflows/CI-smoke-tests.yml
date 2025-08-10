@@ -76,7 +76,7 @@ jobs:
         if: always()
         run: |
           mkdir -p docs
-          cp -r target/cucumber-report/* docs/
+          cp target/cucumber-report.html docs/index.html && cp target/cucumber.json docs/
 
       - name: Upload Pages Artifact
         if: always()
