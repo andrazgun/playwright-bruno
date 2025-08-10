@@ -1,7 +1,12 @@
-name: Deploy Cucumber Report to GitHub Pages
+name: Publish Cucumber Report Manually
 
 on:
+  # This section enables the manual trigger for the workflow.
+  # It will appear as a "Run workflow" button in the Actions tab.
   workflow_dispatch:
+
+env:
+  REPORT_ARTIFACT_NAME: "cucumber-html-report"
 
 permissions:
   contents: read
@@ -13,26 +18,30 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  publish-report:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: List all files in the repository
-        run: ls -lR ./
-
+      - name: Download Cucumber HTML Report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.REPORT_ARTIFACT_NAME }}
+          path: docs/
+          # The optional 'github-pages' is used by the deploy-pages action
+          # and it is a good practice to use this as the artifact name.
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./target/cucumber-report
+          path: docs/
 
       - name: Deploy to GitHub Pages
         id: deployment
