@@ -10,7 +10,7 @@ Feature: WebdriverUniversity.com - Login Page
     Then I should be presented with an alert box which contains text '<expectedAlertText>'
     Examples:
       | username  | password     | expectedAlertText    |
-      |           |              | validation failed    |
+      |           |              | validation failed555    |
       | webdriver |              | validation failed    |
       |           | webdriver123 | validation failed    |
       | webdriver | webdriver123 | validation succeeded |
