@@ -82,7 +82,7 @@ jobs:
           path: docs/
 
   deploy-pages:
-    name: Deploy Cucumber Report to GitHub Pages
+    name: Cucumber Report to GH Pages
     needs: smoke-tests
     runs-on: ubuntu-latest
     environment:
@@ -99,10 +99,10 @@ jobs:
 #          name: github-pages
 #          path: ./
 #
-#      - name: Upload Pages Artifact
-#        uses: actions/upload-pages-artifact@v3
-#        with:
-#          path: ./
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./
 
       - name: Deploy to GitHub Pages
         id: deployment
